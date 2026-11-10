@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Club History</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Source+Sans+3&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="history.html">Club History</a>
+  </nav>
+
+  <main>
+    <h2>The History of FC Barcelona</h2>
+
+    <p>
+      FC Barcelona was founded on November 29, 1899, by a group of football players led by Joan Gamper.
+      The club quickly became an important part of life in Barcelona. Its famous blue and red colors
+      have been worn for more than a century, and fans often call the team "Barça." The club's motto,
+      "Més que un club," means "more than a club," and shows how much it means to its supporters.
+    </p>
+
+    <p>
+      Barcelona won its first La Liga title in 1929 and became one of Spain's top teams over the years.
+      In 1957, the club moved into Camp Nou, which became one of the most famous stadiums in football.
+      One of its biggest moments came in 1992, when Johan Cruyff's team won the European Cup for the
+      first time. In 2009, Barcelona won six trophies in one year under Pep Guardiola, including La Liga
+      and the Champions League.
+    </p>
+
+    <p>
+      Some of Barcelona's best years came with players like Xavi, Andrés Iniesta, and Lionel Messi.
+      Under Guardiola, the team became famous for its passing style and won the Champions League in
+      2009 and 2011. Barça won the treble again in 2015 with Messi, Neymar, and Luis Suárez leading
+      the attack. The club has continued to develop young players through La Masia, its youth academy.
+    </p>
+
+    <h3>Key Moments in Club History</h3>
+    <ol>
+      <li>1899: FC Barcelona is founded by Joan Gamper and a group of players.</li>
+      <li>1929: Barcelona wins the first La Liga season.</li>
+      <li>1957: The club moves into Camp Nou.</li>
+      <li>1992: Barcelona wins its first European Cup.</li>
+      <li>2009: The team wins six trophies in one calendar year.</li>
+      <li>2015: Barça wins its second treble.</li>
+    </ol>
+
+    <img src="images/history.jpeg" alt="FC Barcelona">
+
+    <h3>Barcelona's Major Trophies</h3>
+    <div id="chart"></div>
+  </main>
+
+  <script>
+    const data = [
+      { trophy: "La Liga", count: 28 },
+      { trophy: "Copa del Rey", count: 32 },
+      { trophy: "Champions League", count: 5 },
+      { trophy: "UEFA Super Cup", count: 5 },
+      { trophy: "Supercopa", count: 16 },
+      { trophy: "Cup Winners' Cup", count: 4 },
+      { trophy: "Club World Cup", count: 3 }
+    ];
+
+    const width = 750;
+    const height = 400;
+    const margin = 50;
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    const x = d3.scaleBand()
+      .domain(data.map(d => d.trophy))
+      .range([margin, width - margin])
+      .padding(0.2);
+
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.count) + 3])
+      .range([height - margin, margin]);
+
+    svg.selectAll("rect")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", d => x(d.trophy))
+      .attr("y", d => y(d.count))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - margin - y(d.count));
+
+    svg.append("g")
+      .attr("transform", "translate(0," + (height - margin) + ")")
+      .call(d3.axisBottom(x));
+
+    svg.append("g")
+      .attr("transform", "translate(" + margin + ",0)")
+      .call(d3.axisLeft(y));
+
+    svg.append("text")
+      .attr("x", width / 2)
+      .attr("y", height - 10)
+      .attr("text-anchor", "middle")
+      .text("Competition");
+
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", 15)
+      .attr("text-anchor", "middle")
+      .text("Titles Won");
+  </script>
+
+</body>
+</html>
